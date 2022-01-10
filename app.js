@@ -81,7 +81,8 @@ app.get('/register',(req,res)=>{
 })
 
 app.get('/login',(req,res)=>{
-    res.sendFile(path.join(__dirname,'/views/login.html'));
+    // res.sendFile(path.join(__dirname,'/views/login.html'));
+    res.render('login.ejs')
 })
 
 app.post('/login',async(req,res)=>{
@@ -93,7 +94,8 @@ app.post('/login',async(req,res)=>{
         // console.log(useremail.password);
         if(useremail.password===pass){
             // res.sendFile(path.join(__dirname,'/views/rahul.html'));
-            res.status(200).render('',name)
+            res.render('rahul.ejs',{name:useremail.firstname});
+            // res.status(200).render('',name)
             // res.json({name:useremail.firstname, email:useremail.email})
         }
         else{
@@ -121,7 +123,8 @@ app.post('/register',(req,res)=>{
         })
         this_user.save().then(()=>{
             console.log("This data has been added to the database");
-            res.sendFile(path.join(__dirname,'views/rahul.html'));
+            // res.sendFile(path.join(__dirname,'views/rahul.html'));
+            res.render('rahul.ejs')
         }).catch((error)=>{
             res.status(400).send(error);
         })
