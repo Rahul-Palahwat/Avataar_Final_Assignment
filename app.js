@@ -10,6 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 
+// to set view engine 
+app.set('view-engine', 'ejs');
+
 // this is for database connection 
 const mongoose=require('mongoose');
 mongoose.connect('mongodb://localhost/Demo',{
@@ -73,7 +76,8 @@ app.use('/static',express.static('static'));
 
 // endpoints 
 app.get('/register',(req,res)=>{
-    res.sendFile(path.join(__dirname,'/views/home.html'));
+    // res.sendFile(path.join(__dirname,'/views/home.html'));
+    res.render('home.ejs');
 })
 
 app.get('/login',(req,res)=>{
@@ -89,7 +93,8 @@ app.post('/login',async(req,res)=>{
         // console.log(useremail.password);
         if(useremail.password===pass){
             // res.sendFile(path.join(__dirname,'/views/rahul.html'));
-            res.json({name:useremail.firstname, email:useremail.email})
+            res.status(200).render('',name)
+            // res.json({name:useremail.firstname, email:useremail.email})
         }
         else{
             res.status(400).send(`Invalid password`);
