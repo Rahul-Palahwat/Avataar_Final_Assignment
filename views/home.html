@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/home.css" />
+  </head>
+  <body>
+    <nav>
+      <h1>Rahul's Website</h1>
+      <div class="button">
+        <button id="reg">Register</button>
+        <button id="log">LogIn</button>
+      </div>
+    </nav>
+    <div class="content">
+      <div class="container">
+        <form action="/register" method="post">
+          <div id="name">
+            <input type="text" placeholder="First Name" name="firstname"/>
+            <input type="text" placeholder="Last Name" name="lastname"/>
+          </div>
+
+          <input type="email" placeholder="Enter EmailId" name="email"/>
+          <input type="number" placeholder="Enter phone number" name="number"/>
+          <input type="password" placeholder="Enter password" name="password"/>
+          <input type="password" placeholder="confirm password" name="confirmpassword"/>
+          <input type="number" placeholder="Enter Age" name="age"/>
+          <input type="text" placeholder="Enter gender as M , F , N" name="gender"/>
+          <button id="btn" class="inp">Sign In</button>
+        </form>
+      </div>
+    </div>
+    <footer>
+      <h3>All rights reserved @Rahul</h3>
+    </footer>
+  </body>
+</html>
