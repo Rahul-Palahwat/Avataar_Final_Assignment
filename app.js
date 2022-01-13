@@ -4,6 +4,17 @@ const port=process.env.PORT || 3000;
 const fs=require('fs');
 const path=require('path');
 
+const bcrypt=require('bcryptjs');
+
+
+// this is for cookies and session 
+const mongoURI="mongodb://localhost/Demo";
+const session=require('express-session');
+const MongoDBSession=require('connect-mongodb-session')(session);
+
+
+
+
 // this is to get json format data 
 app.use(express.json());
 // this is a middleware to get the data from post request 
@@ -27,6 +38,26 @@ db.on('error', console.error.bind(console,'connection error:'));
 db.once('open',function(){
     console.log("We are succesfully connected to database");
 })
+
+
+
+// this is for session and cookies 
+const store=new MongoDBSession({
+    uri: mongoURI,
+    collection: 'mySessions',
+})
+
+
+
+app.use(session({
+    secret: 'key that will sign cookies',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+}))
+
+
+
 
 // this is to create schema to store the data to database in a format 
 const userSchema=new mongoose.Schema({
@@ -77,11 +108,15 @@ app.use('/static',express.static('static'));
 // endpoints 
 app.get('/register',(req,res)=>{
     // res.sendFile(path.join(__dirname,'/views/home.html'));
-    res.render('home.ejs');
+    res.render('register.ejs');
 })
+
 
 app.get('/login',(req,res)=>{
     // res.sendFile(path.join(__dirname,'/views/login.html'));
+    req.session.isAuth=true;
+    // console.log(req.session);
+    // console.log(req.session.id);
     res.render('login.ejs')
 })
 
@@ -94,7 +129,7 @@ app.post('/login',async(req,res)=>{
         // console.log(useremail.password);
         if(useremail.password===pass){
             // res.sendFile(path.join(__dirname,'/views/rahul.html'));
-            res.render('rahul.ejs',{name:useremail.firstname});
+            res.render('rahul.ejs',{name:useremail.firstname , mail:useremail.email});
             // res.status(200).render('',name)
             // res.json({name:useremail.firstname, email:useremail.email})
         }
@@ -124,7 +159,7 @@ app.post('/register',(req,res)=>{
         this_user.save().then(()=>{
             console.log("This data has been added to the database");
             // res.sendFile(path.join(__dirname,'views/rahul.html'));
-            res.render('rahul.ejs')
+            res.render('rahul.ejs',{name:req.body.firstname});
         }).catch((error)=>{
             res.status(400).send(error);
         })

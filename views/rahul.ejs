@@ -5,12 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../static/home.css" />
 </head>
 <body>
-    <div id="name">Name of the User: <%= name%></div>
-    <div id="email">Email</div>
-    <div id="number">Numder</div>
-    <div id="gender">Gender</div>
-    <div id="age">Age</div>
+    <nav>
+        <h1><%= name%> Website</h1>
+        <div class="button">
+          <!-- <button id="reg">Register</button> -->
+          <p><%= mail%></p>
+          <button id="log"><a href="/login">Logout</a></button>
+        </div>
+      </nav>
+      <div class="content">
+      </div>
+      <footer>
+        <h3>All rights reserved @Rahul</h3>
+      </footer>
 </body>
 </html>

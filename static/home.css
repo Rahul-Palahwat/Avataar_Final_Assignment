@@ -15,6 +15,17 @@ nav{
     background-color: black;
     padding: .8rem .8rem;
 }
+a{
+    text-decoration: none;
+    color: blue;
+}
+a:hover{
+    color: white;
+}
+#button{
+    display: flex;
+    flex-direction: column;
+}
 button{
     /* display: flex; */
     margin: .2rem;
