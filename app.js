@@ -56,6 +56,15 @@ app.use(session({
     store: store,
 }))
 
+// middleware to authentication 
+const isAuth=(req,res,next)=>{
+    if(req.session.isAuth){
+        next()
+    }else{
+        res.render('/login');
+    }
+}
+
 
 
 
@@ -111,10 +120,15 @@ app.get('/register',(req,res)=>{
     res.render('register.ejs');
 })
 
+app.get('/rahul',isAuth,(req,res)=>{
+    // res.sendFile(path.join(__dirname,'/views/home.html'));
+    res.render('rahul.ejs');
+})
+
 
 app.get('/login',(req,res)=>{
     // res.sendFile(path.join(__dirname,'/views/login.html'));
-    req.session.isAuth=true;
+    // req.session.isAuth=true;
     // console.log(req.session);
     // console.log(req.session.id);
     res.render('login.ejs')
@@ -127,9 +141,12 @@ app.post('/login',async(req,res)=>{
         // console.log(`${id} ${pass}`);
         const useremail=await User.findOne({email:id});
         // console.log(useremail.password);
-        if(useremail.password===pass){
+        const ismatch=await bcrypt.compare(pass,useremail.password);
+        if(ismatch){
             // res.sendFile(path.join(__dirname,'/views/rahul.html'));
-            res.render('rahul.ejs',{name:useremail.firstname , mail:useremail.email});
+            // res.render('rahul.ejs',{name:useremail.firstname , mail:useremail.email});
+            req.session.isAuth=true;
+            res.render('rahul.ejs');
             // res.status(200).render('',name)
             // res.json({name:useremail.firstname, email:useremail.email})
         }
@@ -142,20 +159,22 @@ app.post('/login',async(req,res)=>{
 })
 
 
-app.post('/register',(req,res)=>{
+app.post('/register', async (req,res)=>{
     var password=req.body.password;
     var cpassword=req.body.confirmpassword;
     if(password===cpassword){
+        password=await bcrypt.hash(password, 12);
         var this_user=new User({
             firstname:req.body.firstname,
             lastname:req.body.lastname,
             email:req.body.email,
             phone:req.body.number,
-            password:req.body.password,
-            confirmpassword:cpassword,
+            password:password,
+            confirmpassword:password,
             age:req.body.age,
             gender:req.body.gender,
         })
+        
         this_user.save().then(()=>{
             console.log("This data has been added to the database");
             // res.sendFile(path.join(__dirname,'views/rahul.html'));
